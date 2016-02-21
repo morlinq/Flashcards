@@ -52,4 +52,8 @@ public class FlashcardsAdapter extends BaseAdapter {
     public void addNewFlashcard(Flashcard flashcard) {
         list.add(flashcard);
     }
+
+    public void deleteFlashcard() {
+
+    }
 }

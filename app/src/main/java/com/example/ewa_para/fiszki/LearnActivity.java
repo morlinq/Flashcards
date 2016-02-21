@@ -1,5 +1,6 @@
 package com.example.ewa_para.fiszki;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -52,14 +53,20 @@ public class LearnActivity extends AppCompatActivity{
     }
 
     public void setNumberFlashcards(int number) {
-        this.allFlashcards = number;
+        if (number <= list.size()){
+            this.allFlashcards = number;
+        }
+        else {
+            this.allFlashcards = list.size();
+        }
     }
 
     public void nextFlashcard(View view) {
         RatingBar ratingBar = (RatingBar) this.findViewById(R.id.ratingBar);
         float value = ratingBar.getRating();
+        points += value;
         if(value > 0) {
-            list.get(position).addValue((int)value);
+            list.get(position).addValue((int) value);
             if (position < allFlashcards-1) {
                 position++;
                 setContentView(R.layout.activity_learn);
@@ -67,13 +74,23 @@ public class LearnActivity extends AppCompatActivity{
                 originalWord.setText(list.get(position).getOriginalWord());
             }
             else {
-                new SQLiteHelper(this).updateValues(list,allFlashcards);
+                new SQLiteHelper(this).updateValues(list, allFlashcards);
                 setContentView(R.layout.activity_learn_end);
                 TextView numberOfFlashcards = (TextView) this.findViewById(R.id.numberOfFlashcards);
                 numberOfFlashcards.setText(String.valueOf(allFlashcards));
                 ProgressBar progressBar = (ProgressBar) this.findViewById(R.id.progress);
-                progressBar.setProgress((int)(points/allFlashcards));
+                progressBar.setMax(allFlashcards*5);
+                progressBar.setProgress(points);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //dialog czy na pewno
+        Intent intent = new Intent(this, MainActivity.class);
+        finish();
+        startActivity(intent);
     }
 }

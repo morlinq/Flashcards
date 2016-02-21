@@ -50,13 +50,15 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         db.execSQL(CREATE_TABLE_SQL_QUERY);
     }
 
-    public void addNewFlashcard(String originalWord, String translation) {
+    public Long addNewFlashcard(String originalWord, String translation) {
+        Long id;
         ContentValues newRow = new ContentValues();
         newRow.put(ORIGINAL_WORD_COLUMN, originalWord);
         newRow.put(TRANSLATION_COLUMN, translation);
         newRow.put(VALUE, 0);
 
-        getWritableDatabase().insert(TABLE_NAME, null, newRow);
+        id = getWritableDatabase().insert(TABLE_NAME, null, newRow);
+        return id;
     }
 
     public ArrayList<Flashcard> getAllFlashcardsFromDatabase (Context context) {
@@ -64,6 +66,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         String originalWord;
         String translation;
         Integer value;
+        Long id;
 
         Cursor cursor =
                 getWritableDatabase().query(TABLE_NAME, null, null, null, null, null, null);
@@ -73,7 +76,8 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
                 originalWord = cursor.getString(cursor.getColumnIndex(ORIGINAL_WORD_COLUMN));
                 translation = cursor.getString(cursor.getColumnIndex(TRANSLATION_COLUMN));
                 value = cursor.getInt(cursor.getColumnIndex(VALUE));
-                flashcardsList.add(new Flashcard(originalWord, translation, value, context));
+                id = cursor.getLong(cursor.getColumnIndex(ID_COLUMN));
+                flashcardsList.add(new Flashcard(originalWord, translation, value, id, context));
                 cursor.moveToNext();
             }
 
@@ -81,13 +85,32 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
     }
 
     public void updateValues(ArrayList<Flashcard> list, Integer number) {
+        Long id;
+        Integer value;
+        ContentValues newValue = new ContentValues();
+        SQLiteDatabase database = getWritableDatabase();
         for (int i = 0; i < number; i++) {
-            //przejdź po wszystkich i zaktualizuj
+            id = list.get(i).getDbID();
+            value = list.get(i).getValue();
+            newValue.put(VALUE, String.valueOf(value));
+            database.update(this.TABLE_NAME, newValue, this.ID_COLUMN + " =?",
+                    new String[]{String.valueOf(id)});
         }
     }
 
     public void updateFlashcard(Flashcard flashcard) {
-        //zaktualizuj wszystko oprócz ID
+        ContentValues changes = new ContentValues();
+        changes.put(ORIGINAL_WORD_COLUMN, flashcard.getOriginalWord());
+        changes.put(TRANSLATION_COLUMN, flashcard.getTranslation());
+        changes.put(VALUE, flashcard.getValue());
+
+        getWritableDatabase().update(this.TABLE_NAME, changes, this.ID_COLUMN + " =?",
+                new String[] {String.valueOf(flashcard.getDbID())});
+    }
+
+    public void deleteFlashcard(Long dbID) {
+        getWritableDatabase().delete(this.TABLE_NAME,this.ID_COLUMN + " =?",
+                new String[] {String.valueOf(dbID)});
     }
 
 }

@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         dbHelper = new SQLiteHelper(this);
 
         final ArrayList<Flashcard> list = dbHelper.getAllFlashcardsFromDatabase(this);
@@ -35,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                View view2 = (View) listView.getSelectedItem();
-                TextView textView = (TextView) findViewById(R.id.original_word_view);
-                String originalWord = textView.getText().toString();
-
-                // opcja edytuj/usuń
-                // może "umiem"?
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+                Intent intent = new Intent (getApplicationContext(), SeeFlashcardActivity.class);
+                intent.putExtra("originalWord", list.get(position).getOriginalWord());
+                intent.putExtra("translation", list.get(position).getTranslation());
+                intent.putExtra("dbID", list.get(position).getDbID().toString());
+                intent.putExtra("value", list.get(position).getValue().toString());
+                finish();
+                startActivity(intent);
             }
         });
     }
@@ -75,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_learn) {
             // dialog z pytaniem ile słówek chcę się uczyć
             Intent intent = new Intent(this, LearnActivity.class);
-            startActivityForResult(intent, FLASHCARD_ENTRY_REQUEST_CODE);
+            finish();
+            startActivity(intent);
             return true;
         }
 
@@ -88,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String originalWord = data.getStringExtra("originalWord");
                 String translation = data.getStringExtra("translation");
-                Flashcard flashcard = new Flashcard(originalWord, translation, 0, this);
-                dbHelper.addNewFlashcard(originalWord, translation);
+                Long id;
+                id = dbHelper.addNewFlashcard(originalWord, translation);
+                Flashcard flashcard = new Flashcard(originalWord, translation, 0, id, this);
                 adapter.addNewFlashcard(flashcard);
                 adapter.notifyDataSetChanged();
             }

@@ -29,19 +29,22 @@
         android:id="@+id/translation"/>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:onClick="onSave"
             android:text="@string/addFlashcard" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:onClick="onCancel"
             android:text="@string/cancelFlashcard" />
     </LinearLayout>

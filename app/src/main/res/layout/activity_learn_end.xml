@@ -19,14 +19,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="progress"/>
+        android:text="@string/progress"/>
 
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="10dp"
         android:layout_gravity="center"
-        android:max="100"
         android:indeterminate="false"
         android:id="@+id/progress"/>
 

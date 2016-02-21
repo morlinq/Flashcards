@@ -9,13 +9,15 @@ public class Flashcard {
     private String originalWord;
     private String translation;
     private Integer value;
-    private Integer dbID;
+    private Long dbID;
     private Context context;
 
-    public Flashcard(String originalWord, String translation, Integer value, Context context) {
+    public Flashcard(String originalWord, String translation, Integer value, Long dbID, Context context) {
         this.originalWord = originalWord;
         this.translation = translation;
         this.value = value;
+        this.dbID = dbID;
+        this.context = context;
     }
 
     public String getOriginalWord() {
@@ -30,12 +32,12 @@ public class Flashcard {
         return value;
     }
 
-    public Integer getDbID() {
+    public Long getDbID() {
         return this.dbID;
     }
 
-    public void setDbID (Integer id) {
-        dbID = id;
+    public void setDbID (Long dbID) {
+        dbID = dbID;
     }
 
     public void editOriginalWord (String originalWord) {
@@ -44,12 +46,16 @@ public class Flashcard {
     }
 
     public void editTranslation (String translation) {
-        this.originalWord = translation;
+        this.translation = translation;
         new SQLiteHelper(this.context).updateFlashcard(this);
     }
 
     public void addValue(Integer value) {
         this.value += value;
+    }
+
+    public void deleteFlashcard() {
+        new SQLiteHelper(this.context).deleteFlashcard(dbID);
     }
 
 }

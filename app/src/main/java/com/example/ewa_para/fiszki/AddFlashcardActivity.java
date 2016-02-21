@@ -31,4 +31,7 @@ public class AddFlashcardActivity extends AppCompatActivity {
         this.setResult(RESULT_OK, intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() { }
 }

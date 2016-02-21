@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".LearnActivity" >
         </activity>
+        <activity android:name=".SeeFlashcardActivity" >
+        </activity>
     </application>
 
 </manifest>

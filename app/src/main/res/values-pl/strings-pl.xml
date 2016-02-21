@@ -10,6 +10,8 @@
     <string name="flashcardsInLesson">Fiszek w lekcji</string>
     <string name="addFlashcard">Dodaj</string>
     <string name="cancelFlashcard">Zakończ</string>
+    <string name="editFlashcard">Edytuj</string>
+    <string name="deleteFlashcard">Usuń</string>
     <string name="writeOriginalWord">Wpisz słowo</string>
     <string name="writeTranslation">Wpisz tłumaczenie</string>
 </resources>

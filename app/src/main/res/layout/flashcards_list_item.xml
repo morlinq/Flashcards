@@ -2,19 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#ffc0cb">
 
     <TextView
         android:id="@+id/original_word_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:paddingBottom="10dp"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/translation_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:gravity="center"
+        android:textSize="24sp" />
 
 </LinearLayout>
