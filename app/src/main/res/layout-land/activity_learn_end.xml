@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/LearnEndFlashcardsInLesson"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:textSize="20dp"/>
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:id="@+id/numberOfFlashcards"
-        android:layout_weight="1"
+        android:layout_weight="1.6"
         android:textSize="40dp"/>
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/LearnEndProgress"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:textSize="20dp"/>
 
 
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:text="@string/LearnEndBtnOK"
+        android:text="OK"
         android:onClick="backToMenu"
         android:layout_weight="2"/>
 

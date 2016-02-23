@@ -2,7 +2,40 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:textAppearanceButton">@style/ButtonStyle</item>
+        <item name="colorButtonNormal">@color/ButtonColor</item>
+        <item name="editTextBackground">@color/EditTextColor</item>
+        <item name="android:textColor">@color/TextColor</item>
     </style>
+
+
+    <style name="ButtonStyle" parent="android:Widget.Button">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="FlashcardSize"> 40dp</style>
+
+    <!--
+    <style name="PinkTheme" parent="AppTheme" >
+        <item name="colorButtonNormal"> #FF00FF </item>
+        <item name="android:textAppearanceButton">@style/ButtonStyle</item>
+
+        <item name="android:background"> #FFFFA1E3 </item>
+        <item name="background">@color/pink </item>
+        <item name="android:color">@color/pink </item>
+        <item name="color">@color/pink </item>
+        <item name="android:colorBackground">@color/pink </item>
+
+
+    </style>
+    -->
+    
+    <color name="ButtonColor"> #F9A825 </color>
+    <color name="BackgroundColor"> #FFFFE5B1 </color>
+
+    <color name="EditTextColor">  #FFF8E1 </color>
+    <color name="TextColor">#3E2723</color>
+
 
 </resources>

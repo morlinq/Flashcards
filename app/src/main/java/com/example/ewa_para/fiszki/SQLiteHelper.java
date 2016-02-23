@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by ewa_para on 2016-02-16.
@@ -30,7 +32,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
             + TRANSLATION_COLUMN + " varchar(255), "
             + VALUE + " integer);";
 
-    private SQLiteDatabase database;
 
     private String DROP_TABLE_SQL_QUERY = "drop table if exists" + TABLE_NAME + ";";
 
@@ -41,7 +42,6 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_SQL_QUERY);
-        database = db;
     }
 
     @Override
@@ -50,15 +50,35 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         db.execSQL(CREATE_TABLE_SQL_QUERY);
     }
 
-    public Long addNewFlashcard(String originalWord, String translation) {
+    public Long addNewFlashcard(String originalWord, String translation, Context context) {
         Long id;
+
+        decreaseValues(context);
         ContentValues newRow = new ContentValues();
         newRow.put(ORIGINAL_WORD_COLUMN, originalWord);
         newRow.put(TRANSLATION_COLUMN, translation);
         newRow.put(VALUE, 0);
-
         id = getWritableDatabase().insert(TABLE_NAME, null, newRow);
+
         return id;
+    }
+
+    private void decreaseValues(Context context) {
+        Integer decrease;
+        ArrayList<Flashcard> list = getAllFlashcardsFromDatabase(context);
+        Collections.sort(list, new Comparator<Flashcard>() {
+            @Override
+            public int compare(Flashcard flashcard, Flashcard flashcard2) {
+                return flashcard.getValue().compareTo(flashcard2.getValue());
+            }
+        });
+        decrease = list.get(0).getValue();
+
+        for (Flashcard flashcard : list) {
+            flashcard.setValue(flashcard.getValue()-decrease);
+        }
+
+        updateValues(list, list.size());
     }
 
     public ArrayList<Flashcard> getAllFlashcardsFromDatabase (Context context) {
@@ -72,7 +92,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
                 getWritableDatabase().query(TABLE_NAME, null, null, null, null, null, null);
 
         if (cursor.moveToFirst())
-            while (cursor.isAfterLast() == false){
+            while (!cursor.isAfterLast()){
                 originalWord = cursor.getString(cursor.getColumnIndex(ORIGINAL_WORD_COLUMN));
                 translation = cursor.getString(cursor.getColumnIndex(TRANSLATION_COLUMN));
                 value = cursor.getInt(cursor.getColumnIndex(VALUE));

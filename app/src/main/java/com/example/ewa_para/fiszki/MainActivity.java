@@ -63,16 +63,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.action_add_flashcard) {
             Intent intent = new Intent(this, AddFlashcardActivity.class);
             startActivityForResult(intent, FLASHCARD_ENTRY_REQUEST_CODE);
             return true;
         }
         if (id == R.id.action_learn) {
-            // dialog z pytaniem ile słówek chcę się uczyć
             Intent intent = new Intent(this, LearnActivity.class);
             finish();
             startActivity(intent);
@@ -89,11 +85,19 @@ public class MainActivity extends AppCompatActivity {
                 String originalWord = data.getStringExtra("originalWord");
                 String translation = data.getStringExtra("translation");
                 Long id;
-                id = dbHelper.addNewFlashcard(originalWord, translation);
+                id = dbHelper.addNewFlashcard(originalWord, translation, this);
                 Flashcard flashcard = new Flashcard(originalWord, translation, 0, id, this);
                 adapter.addNewFlashcard(flashcard);
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

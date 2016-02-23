@@ -4,7 +4,7 @@ import android.content.Context;
 
 /**
  * Created by ewa_para on 2016-02-16.
- */
+ **/
 public class Flashcard {
     private String originalWord;
     private String translation;
@@ -32,12 +32,16 @@ public class Flashcard {
         return value;
     }
 
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
     public Long getDbID() {
         return this.dbID;
     }
 
     public void setDbID (Long dbID) {
-        dbID = dbID;
+        this.dbID = dbID;
     }
 
     public void editOriginalWord (String originalWord) {
