@@ -1,5 +1,6 @@
 package com.example.ewa_para.fiszki;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,8 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MenuActivity extends AppCompatActivity {
-    public static final int FLASHCARD_ENTRY_REQUEST_CODE = 1;
+public class MenuActivity extends Activity {
     private Boolean isDialogDisplayed;
 
     @Override
@@ -33,20 +33,9 @@ public class MenuActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FLASHCARD_ENTRY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String originalWord = data.getStringExtra("originalWord");
-                String translation = data.getStringExtra("translation");
-                new SQLiteHelper(this).addNewFlashcard(originalWord, translation, this);
-            }
-        }
-    }
-
     public void addFlashcard(View view) {
         Intent intent = new Intent(this, AddFlashcardActivity.class);
-        startActivityForResult(intent, FLASHCARD_ENTRY_REQUEST_CODE);
+        startActivity(intent);
     }
 
     public void seeAll(View view) {

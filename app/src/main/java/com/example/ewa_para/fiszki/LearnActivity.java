@@ -11,14 +11,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * Created by ewa_para on 2016-02-16.
- */
+
 public class LearnActivity extends AppCompatActivity{
     private static final String PREFERENCES_NAME = "myPreferences";
     private static final String PREFERENCES_FLASHCARDS_NUMBER = "";
@@ -49,7 +48,7 @@ public class LearnActivity extends AppCompatActivity{
             learned = 0;
             isDialogDisplayed = false;
 
-            list = new SQLiteHelper(this).getAllFlashcardsFromDatabase(this);
+            list = new SQLiteHelper(this).getAllFlashcardsFromDatabase();
             Collections.sort(list, new Comparator<Flashcard>() {
                 @Override
                 public int compare(Flashcard flashcard, Flashcard flashcard2) {
@@ -57,15 +56,21 @@ public class LearnActivity extends AppCompatActivity{
                 }
             });
 
-            TextView originalWord = (TextView) this.findViewById(R.id.learnOriginalWord);
-            originalWord.setText(list.get(position).getOriginalWord());
+            if(list.isEmpty()){
+                showToast(this.getResources().getString(R.string.LearnEmptyDatabase));
+                Intent intent = new Intent(this, MenuActivity.class);
+                finish();
+                startActivity(intent);
+            }else {
+                TextView originalWord = (TextView) this.findViewById(R.id.learnOriginalWord);
+                originalWord.setText(list.get(position).getOriginalWord());
 
-            preferences = getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
-            setFlashcardsNumber(Integer.valueOf(preferences.getString(PREFERENCES_FLASHCARDS_NUMBER, "5")));
+                preferences = getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+                setFlashcardsNumber(Integer.valueOf(preferences.getString(PREFERENCES_FLASHCARDS_NUMBER, "5")));
 
-            TextView whichWordLearn = (TextView) this.findViewById(R.id.whichWordLearn);
-            whichWordLearn.setText(String.valueOf(position + 1) + "/" + String.valueOf(allFlashcards));
-
+                TextView whichWordLearn = (TextView) this.findViewById(R.id.whichWordLearn);
+                whichWordLearn.setText(String.valueOf(position + 1) + "/" + String.valueOf(allFlashcards));
+            }
         }
     }
 
@@ -86,7 +91,7 @@ public class LearnActivity extends AppCompatActivity{
         }
 
 
-        list = new SQLiteHelper(this).getAllFlashcardsFromDatabase(this);
+        list = new SQLiteHelper(this).getAllFlashcardsFromDatabase();
         Collections.sort(list, new Comparator<Flashcard>() {
             @Override
             public int compare(Flashcard flashcard, Flashcard flashcard2) {
@@ -247,5 +252,9 @@ public class LearnActivity extends AppCompatActivity{
             RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
             outState.putFloat("ratingBar",ratingBar.getRating());
         }
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

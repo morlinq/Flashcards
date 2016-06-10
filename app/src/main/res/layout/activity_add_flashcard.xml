@@ -44,6 +44,7 @@
         android:layout_height="0dp"
         android:onClick="onSave"
         android:text="@string/AddFlashcardBtnAdd"
+        android:id="@+id/addButton"
         android:layout_alignParentBottom="true"
         android:layout_weight="2"/>
 

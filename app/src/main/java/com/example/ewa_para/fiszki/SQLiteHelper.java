@@ -11,19 +11,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * Created by ewa_para on 2016-02-16.
- */
+
 public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Flashcards.db";
     private static final String ID_COLUMN = BaseColumns._ID;
 
-    private static final String TABLE_NAME = "flashcards";
-    private static final String ORIGINAL_WORD_COLUMN = "original_word";
-    private static final String TRANSLATION_COLUMN = "translation";
-    private static final String VALUE = "value";
+    protected static final String TABLE_NAME = "flashcards";
+    protected static final String ORIGINAL_WORD_COLUMN = "original_word";
+    protected static final String TRANSLATION_COLUMN = "translation";
+    protected static final String VALUE = "value";
 
 
     private String CREATE_TABLE_SQL_QUERY = "create table " + TABLE_NAME
@@ -50,10 +48,10 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         db.execSQL(CREATE_TABLE_SQL_QUERY);
     }
 
-    public Long addNewFlashcard(String originalWord, String translation, Context context) {
+    public Long addNewFlashcard(String originalWord, String translation) {
         Long id;
 
-        decreaseValues(context);
+        decreaseValues();
         ContentValues newRow = new ContentValues();
         newRow.put(ORIGINAL_WORD_COLUMN, originalWord);
         newRow.put(TRANSLATION_COLUMN, translation);
@@ -63,16 +61,18 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         return id;
     }
 
-    private void decreaseValues(Context context) {
-        Integer decrease;
-        ArrayList<Flashcard> list = getAllFlashcardsFromDatabase(context);
+    private void decreaseValues() {
+        Integer decrease = 0;
+        ArrayList<Flashcard> list = getAllFlashcardsFromDatabase();
         Collections.sort(list, new Comparator<Flashcard>() {
             @Override
             public int compare(Flashcard flashcard, Flashcard flashcard2) {
                 return flashcard.getValue().compareTo(flashcard2.getValue());
             }
         });
-        decrease = list.get(0).getValue();
+        if(!list.isEmpty()) {
+            decrease = list.get(0).getValue();
+        }
 
         for (Flashcard flashcard : list) {
             flashcard.setValue(flashcard.getValue()-decrease);
@@ -81,7 +81,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         updateValues(list, list.size());
     }
 
-    public ArrayList<Flashcard> getAllFlashcardsFromDatabase (Context context) {
+    public ArrayList<Flashcard> getAllFlashcardsFromDatabase () {
         ArrayList<Flashcard> flashcardsList = new ArrayList<>();
         String originalWord;
         String translation;
@@ -97,7 +97,7 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
                 translation = cursor.getString(cursor.getColumnIndex(TRANSLATION_COLUMN));
                 value = cursor.getInt(cursor.getColumnIndex(VALUE));
                 id = cursor.getLong(cursor.getColumnIndex(ID_COLUMN));
-                flashcardsList.add(new Flashcard(originalWord, translation, value, id, context));
+                flashcardsList.add(new Flashcard(originalWord, translation, value, id));
                 cursor.moveToNext();
             }
 
@@ -132,5 +132,4 @@ public class SQLiteHelper extends SQLiteOpenHelper implements BaseColumns {
         getWritableDatabase().delete(this.TABLE_NAME,this.ID_COLUMN + " =?",
                 new String[] {String.valueOf(dbID)});
     }
-
 }

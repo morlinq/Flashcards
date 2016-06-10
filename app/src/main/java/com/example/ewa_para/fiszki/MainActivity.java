@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         dbHelper = new SQLiteHelper(this);
 
-        final ArrayList<Flashcard> list = dbHelper.getAllFlashcardsFromDatabase(this);
+        final ArrayList<Flashcard> list = dbHelper.getAllFlashcardsFromDatabase();
 
         for (Flashcard flashcard: list) {
             adapter.addNewFlashcard(flashcard);
@@ -85,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 String originalWord = data.getStringExtra("originalWord");
                 String translation = data.getStringExtra("translation");
                 Long id;
-                id = dbHelper.addNewFlashcard(originalWord, translation, this);
-                Flashcard flashcard = new Flashcard(originalWord, translation, 0, id, this);
+                id = dbHelper.addNewFlashcard(originalWord, translation);
+                Flashcard flashcard = new Flashcard(originalWord, translation, 0, id);
                 adapter.addNewFlashcard(flashcard);
                 adapter.notifyDataSetChanged();
             }

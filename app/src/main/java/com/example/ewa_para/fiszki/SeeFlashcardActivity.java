@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Created by ewa_para on 2016-02-20.
- */
+
 public class SeeFlashcardActivity extends AppCompatActivity {
     private EditText originalWordET;
     private EditText translationET;
@@ -77,7 +75,7 @@ public class SeeFlashcardActivity extends AppCompatActivity {
             editBtnText = "edit";
             new SQLiteHelper(getApplicationContext()).updateFlashcard(
                     new Flashcard(originalWordET.getText().toString(),
-                            translationET.getText().toString(), value, dbID, getApplicationContext()));
+                            translationET.getText().toString(), value, dbID));
             showToast(this.getResources().getString(R.string.ToastMsgFlashcardEdited));
         }
     }

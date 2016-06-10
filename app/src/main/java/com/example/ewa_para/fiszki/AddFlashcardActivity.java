@@ -1,5 +1,6 @@
 package com.example.ewa_para.fiszki;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +10,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by ewa_para on 2016-02-16.
- */
-public class AddFlashcardActivity extends AppCompatActivity {
+
+public class AddFlashcardActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +23,7 @@ public class AddFlashcardActivity extends AppCompatActivity {
         EditText originalWord = (EditText) findViewById(R.id.originalWord);
         EditText translation = (EditText) findViewById(R.id.translation);
         if (originalWord.getText().toString().length() > 0 && translation.getText().toString().length() > 0){
-            ArrayList<Flashcard> list = new SQLiteHelper(this).getAllFlashcardsFromDatabase(this);
+            ArrayList<Flashcard> list = new SQLiteHelper(this).getAllFlashcardsFromDatabase();
             Boolean flag = false;
             for (Flashcard flashcard: list) {
                 if (flashcard.getOriginalWord().equals(originalWord.getText().toString()) &&
@@ -34,10 +33,7 @@ public class AddFlashcardActivity extends AppCompatActivity {
                 }
             }
             if (!flag) {
-                Intent intent = getIntent();
-                intent.putExtra("originalWord", originalWord.getText().toString());
-                intent.putExtra("translation", translation.getText().toString());
-                this.setResult(RESULT_OK, intent);
+                new SQLiteHelper(this).addNewFlashcard(originalWord.getText().toString(), translation.getText().toString());
                 showToast(this.getResources().getString(R.string.ToastMsgFlashcardAdded));
                 finish();
             }

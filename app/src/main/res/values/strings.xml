@@ -11,6 +11,7 @@
     <string name="LearnEndFlashcardsInLesson">Flashcards in lesson:</string>
     <string name="LearnEndProgress">Your progress:</string>
     <string name="LearnEndBtnOK">OK</string>
+    <string name="LearnEmptyDatabase">Database is Empty!</string>
     <string name="AddFlashcardWriteWord">Write original word:</string>
     <string name="AddFlashcardWriteTranslation">Write translation:</string>
     <string name="AddFlashcardBtnAdd">Add</string>

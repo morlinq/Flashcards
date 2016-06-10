@@ -10,6 +10,7 @@
     <string name="LearnEndFlashcardsInLesson">Fiszek w lekcji:</string>
     <string name="LearnEndProgress">Twój postęp:</string>
     <string name="LearnEndBtnOK">OK</string>
+    <string name="LearnEmptyDatabase">Baza jest pusta!</string>
     <string name="AddFlashcardWriteWord">Podaj słowo:</string>
     <string name="AddFlashcardWriteTranslation">Podaj tłumaczenie:</string>
     <string name="AddFlashcardBtnAdd">Dodaj</string>

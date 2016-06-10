@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by ewa_para on 2016-02-16.
- */
+
 public class FlashcardsAdapter extends BaseAdapter {
     private ArrayList<Flashcard> list = new ArrayList<Flashcard>();
 
